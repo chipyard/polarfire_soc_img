@@ -16,7 +16,7 @@ SRC_URI_append_icicle-kit-es = " \
     file://0003-Microchip-Adding-I2C-Support-for-the-Polarfire-SoC.patch \
     file://0008-pac139x.patch \
  "
- 
+
 SRC_URI_append_icicle-kit-es-sd = " \
     file://icicle-kit-es-a000-microchip.dts \
     file://0001-PFSoC-Icicle-kit-Adding-DTS-makefile.patch \
@@ -26,7 +26,7 @@ SRC_URI_append_icicle-kit-es-sd = " \
     file://0003-Microchip-Adding-I2C-Support-for-the-Polarfire-SoC.patch \
     file://0008-pac139x.patch \
  "
- 
+
 SRC_URI_append_mpfs = " \
     file://mpfs.dts \
     file://0004-SiFive-Unleashed-CPUFreq.patch \

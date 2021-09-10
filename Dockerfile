@@ -5,9 +5,9 @@ LABEL maintainer="a.badmaev@clicknet.pro"
 # set timezone
 ENV TZ=Europe/Moscow
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
- 
 
-# install dependencies 
+
+# install dependencies
 RUN apt-get update && apt-get install -y \
     gawk wget git-core diffstat unzip texinfo gcc-multilib \
     build-essential chrpath socat cpio python3 python3-pip python3-pexpect \
@@ -16,13 +16,13 @@ RUN apt-get update && apt-get install -y \
 
 
 # symlink from python3 to python
-RUN ln -s /usr/bin/python3 /usr/bin/python 
+RUN ln -s /usr/bin/python3 /usr/bin/python
 
 
 # set locale for Bitbake
 RUN locale-gen en_US.UTF-8 && update-locale
-ENV LANG en_US.UTF-8  
-ENV LANGUAGE en_US:en  
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 
@@ -44,7 +44,11 @@ RUN mkdir -p ~/.bin && \
     repo rebase
 
 
-# select commits and build image
+# add files for linux kernel upgrade to container
+ADD ./kernel_update yocto-dev
+
+
+# select commits and build image with upgraded kernel
 RUN cd yocto-dev/meta-polarfire-soc-yocto-bsp && \
     git checkout d3b63021c3a521a3f08908d005e2df5d0d1ca8c9 && cd .. && \
     cd meta-riscv/ && git checkout 6f495435ed9269030e16b9051b9012ce42038c04 && cd .. && \
@@ -52,7 +56,10 @@ RUN cd yocto-dev/meta-polarfire-soc-yocto-bsp && \
     cd openembedded-core/bitbake/ && git checkout 9a5dd1be63395c76d3fac2c3c7ba6557fe47b442 && cd ../.. && \
     cd meta-openembedded/ && git checkout f92b959f4a52ec7596aace92c8d37a370a132f30 && cd .. && \
     . ./meta-polarfire-soc-yocto-bsp/polarfire-soc_yocto_setup.sh && \
-    echo 'BB_NUMBER_THREADS = "6"' >> conf/local.conf && \
+    echo 'BB_NUMBER_THREADS = "4"' >> conf/local.conf && \
+    mv ../0001-V2-GPIO-Driver-updates.patch ../meta-polarfire-soc-yocto-bsp/recipes-kernel/linux/files && \
+    mv ../kernel.bbclass ../openembedded-core/meta/classes/ && \
+    mv ../mpfs-linux_5.%.bb ../meta-polarfire-soc-yocto-bsp/recipes-kernel/linux/ && \
     MACHINE=icicle-kit-es-sd bitbake core-image-minimal-dev
 
 

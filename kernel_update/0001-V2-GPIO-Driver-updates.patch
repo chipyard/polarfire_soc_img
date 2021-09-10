@@ -18,7 +18,7 @@ index b8013cf90064..936aa0b346c6 100644
 @@ -353,6 +353,13 @@ config GPIO_MENZ127
  	help
  	  Say yes here to support the MEN 16Z127 GPIO Controller
- 
+
 +config GPIO_MICROSEMI
 +	bool "Microsemi GPIO support"
 +	depends on OF_GPIO
@@ -411,7 +411,7 @@ index 000000000000..16866493ad60
 +
 +	status = MSS_GPIO_IOREAD(mss_gpio->gpio_irq_base) & MSS_GPIO_IRQ_MASK;
 +	for_each_set_bit(offset, (const unsigned long *)&status,
-+		mss_gpio->gc.ngpio) { 
++		mss_gpio->gc.ngpio) {
 +		generic_handle_irq(irq_find_mapping(mss_gpio->gc.irq.domain,
 +			offset));
 +	}
