@@ -48,18 +48,32 @@ RUN mkdir -p ~/.bin && \
 ADD ./kernel_update yocto-dev
 
 
-# select commits and build image with upgraded kernel
+# set your name and email for git
+RUN git config --global user.email "a.badmaev@clicknet.pro" && \
+    git config --global user.name "ananda"
+
+
+# build image with upgraded kernel
 RUN cd yocto-dev/meta-polarfire-soc-yocto-bsp && \
+    # select needed commits 
     git checkout d3b63021c3a521a3f08908d005e2df5d0d1ca8c9 && cd .. && \
     cd meta-riscv/ && git checkout 6f495435ed9269030e16b9051b9012ce42038c04 && cd .. && \
     cd openembedded-core/ && git checkout 38e3d5bd3d05ed00a2fc55e3729cb8a6d4e4132f && cd .. && \
     cd openembedded-core/bitbake/ && git checkout 9a5dd1be63395c76d3fac2c3c7ba6557fe47b442 && cd ../.. && \
     cd meta-openembedded/ && git checkout f92b959f4a52ec7596aace92c8d37a370a132f30 && cd .. && \
+    # changes for kernel upgrade
+    mv 0001-V2-GPIO-Driver-updates.patch meta-polarfire-soc-yocto-bsp/recipes-kernel/linux/files && \
+    rm openembedded-core/meta/classes/kernel.bbclass && \
+    mv kernel.bbclass openembedded-core/meta/classes/ && \
+    cd openembedded-core && git add -A && \
+    git commit -m "kernel.bbclass" && cd .. && \
+    rm meta-polarfire-soc-yocto-bsp/recipes-kernel/linux/mpfs-linux_5.%.bb && \
+    mv mpfs-linux_5.%.bb meta-polarfire-soc-yocto-bsp/recipes-kernel/linux/ && \
+    cd meta-polarfire-soc-yocto-bsp && git add -A && \
+    git commit -m "GPIO driver patch and mpfs-linux" && cd .. && \
+    # build image 
     . ./meta-polarfire-soc-yocto-bsp/polarfire-soc_yocto_setup.sh && \
     echo 'BB_NUMBER_THREADS = "4"' >> conf/local.conf && \
-    mv ../0001-V2-GPIO-Driver-updates.patch ../meta-polarfire-soc-yocto-bsp/recipes-kernel/linux/files && \
-    mv ../kernel.bbclass ../openembedded-core/meta/classes/ && \
-    mv ../mpfs-linux_5.%.bb ../meta-polarfire-soc-yocto-bsp/recipes-kernel/linux/ && \
     MACHINE=icicle-kit-es-sd bitbake core-image-minimal-dev
 
 

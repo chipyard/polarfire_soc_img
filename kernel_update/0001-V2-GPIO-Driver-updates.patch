@@ -94,7 +94,7 @@ index 000000000000..16866493ad60
 +struct microsemi_mss_gpio_chip {
 +	raw_spinlock_t lock;
 +	struct gpio_chip gc;
-+        struct clk		*clk;
++	struct clk		*clk;
 +
 +	MSS_GPIO_REG_TYPE __iomem *base;
 +	MSS_GPIO_REG_TYPE __iomem *gpio_cfg_base;
@@ -456,7 +456,7 @@ index 000000000000..16866493ad60
 +		dev_err(&pdev->dev, "failed to enable clock\n");
 +		return -EINVAL;
 +	}
-+        mss_gpio->clk = clk;
++	mss_gpio->clk = clk;
 +
 +	mss_gpio->gpio_cfg_base = mss_gpio->base + (0x00u/sizeof(MSS_GPIO_REG_TYPE));
 +	mss_gpio->gpio_irq_base = mss_gpio->base + (0x80u/sizeof(MSS_GPIO_REG_TYPE));
