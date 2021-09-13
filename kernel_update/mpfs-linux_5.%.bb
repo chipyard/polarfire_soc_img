@@ -3,9 +3,9 @@ require recipes-kernel/linux/mpfs-linux-common.inc
 LINUX_VERSION ?= "5.13.x"
 KERNEL_VERSION_SANITY_SKIP="1"
 
-BRANCH = "icicle_kit_2020.10"
+BRANCH = "icicle_kit_2020.10-gpio"
 SRCREV = "${AUTOREV}"
-SRC_URI = "git://github.com/tynrol/linux.git;branch=${BRANCH}"
+SRC_URI = "git://github.com/badmaev055663/linux.git;branch=${BRANCH}"
 
 SRC_URI_append_icicle-kit-es = " \
     file://icicle-kit-es-a000-microchip.dts \
@@ -22,7 +22,6 @@ SRC_URI_append_icicle-kit-es-sd = " \
     file://0001-PFSoC-Icicle-kit-Adding-DTS-makefile.patch \
     file://0001-Microchip-Polarfire-SoC-Clock-Driver.patch \
     file://0002-PFSoC-MAC-Interface-auto-negotiation.patch \
-    file://0001-V2-GPIO-Driver-updates.patch \
     file://0003-Microchip-Adding-I2C-Support-for-the-Polarfire-SoC.patch \
     file://0008-pac139x.patch \
  "

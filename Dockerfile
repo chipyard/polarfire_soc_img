@@ -62,7 +62,6 @@ RUN cd yocto-dev/meta-polarfire-soc-yocto-bsp && \
     cd openembedded-core/bitbake/ && git checkout 9a5dd1be63395c76d3fac2c3c7ba6557fe47b442 && cd ../.. && \
     cd meta-openembedded/ && git checkout f92b959f4a52ec7596aace92c8d37a370a132f30 && cd .. && \
     # changes for kernel upgrade
-    mv 0001-V2-GPIO-Driver-updates.patch meta-polarfire-soc-yocto-bsp/recipes-kernel/linux/files && \
     rm openembedded-core/meta/classes/kernel.bbclass && \
     mv kernel.bbclass openembedded-core/meta/classes/ && \
     cd openembedded-core && git add -A && \
@@ -70,7 +69,7 @@ RUN cd yocto-dev/meta-polarfire-soc-yocto-bsp && \
     rm meta-polarfire-soc-yocto-bsp/recipes-kernel/linux/mpfs-linux_5.%.bb && \
     mv mpfs-linux_5.%.bb meta-polarfire-soc-yocto-bsp/recipes-kernel/linux/ && \
     cd meta-polarfire-soc-yocto-bsp && git add -A && \
-    git commit -m "GPIO driver patch and mpfs-linux" && cd .. && \
+    git commit -m "mpfs-linux" && cd .. && \
     # build image 
     . ./meta-polarfire-soc-yocto-bsp/polarfire-soc_yocto_setup.sh && \
     echo 'BB_NUMBER_THREADS = "4"' >> conf/local.conf && \
